@@ -253,14 +253,16 @@ export async function isEmailVerified(
   if (!isUuidValid) {
     next(new CustomError("uuid is not valid"));
   }
-
+ console.log("controller")
   const data = await _isEmailVerified(uuid, next).catch(
     (err:any) => {
       next(err);
     }
   );
 
-  if (!data) throw new CustomError("An error occurred");
+  console.log(data)
+ 
+  if (!data) new CustomError("An error occurred");
 
   if (data) {
   
@@ -269,7 +271,7 @@ export async function isEmailVerified(
       .send({
         success: true,
         message: "request successful",
-        data: data || null,
+        data: data.isEmailVerified || false,
       });
   }
 }

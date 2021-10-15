@@ -85,13 +85,16 @@ export const _isEmailVerified = async (uuid:string, next:NextFunction) =>{
     const userData = await User.findOne({  uuid:uuid })
 
     if(!userData) throw new CustomError("User does not exist")
-
+     console.log("services")
 
 
     if(userData){
-        
-       return userData.isEmailVerified;
-    }
+        console.log(userData)
+       return userData;
+    }                 
+    console.log(userData , "us")
+    return
+
     
 }
 
@@ -107,5 +110,7 @@ export const _user= async (uuid:string, next:NextFunction) =>{
         
         return userData;
     }
+
+    return
     
 }

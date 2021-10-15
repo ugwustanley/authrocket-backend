@@ -291,20 +291,22 @@ function isEmailVerified(req, res, next) {
                     if (!isUuidValid) {
                         next(new customError_1.default("uuid is not valid"));
                     }
+                    console.log("controller");
                     return [4 /*yield*/, auth_service_1._isEmailVerified(uuid, next).catch(function (err) {
                             next(err);
                         })];
                 case 2:
                     data = _a.sent();
+                    console.log(data);
                     if (!data)
-                        throw new customError_1.default("An error occurred");
+                        new customError_1.default("An error occurred");
                     if (data) {
                         res
                             .status(200)
                             .send({
                             success: true,
                             message: "request successful",
-                            data: data || null,
+                            data: data.isEmailVerified || false,
                         });
                     }
                     return [2 /*return*/];

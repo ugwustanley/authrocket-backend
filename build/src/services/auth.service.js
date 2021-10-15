@@ -135,9 +135,12 @@ var _isEmailVerified = function (uuid, next) { return __awaiter(void 0, void 0, 
                 userData = _a.sent();
                 if (!userData)
                     throw new customError_1.default("User does not exist");
+                console.log("services");
                 if (userData) {
-                    return [2 /*return*/, userData.isEmailVerified];
+                    console.log(userData);
+                    return [2 /*return*/, userData];
                 }
+                console.log(userData, "us");
                 return [2 /*return*/];
         }
     });
