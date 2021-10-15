@@ -14,6 +14,8 @@ route.post('/register', auth_validator_1.registerValidator, auth_controller_1.us
 route.post("/login", auth_validator_1.loginValidator, auth_controller_1.userLogin);
 route.use(auth_1.default);
 route.get('/key', function (req, res) { res.send(keyServices_1.generateKey()); });
+route.get('/email/:id', auth_controller_1.isEmailVerified);
+route.get('/user/:id', auth_controller_1.user);
 route.get('/getkey/:id', auth_controller_1.getApiKey);
 route.get("/getusers/:id", auth_controller_1.getUsers);
 exports.default = route;

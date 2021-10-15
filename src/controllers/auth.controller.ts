@@ -6,7 +6,7 @@ import {
   validateKey,
   validateUuid,
 } from "../middleware/keyServices";
-import { _userRegister, _userLogin, _getUsers , _confirmEmail} from "../services/auth.service";
+import { _userRegister, _userLogin, _getUsers , _confirmEmail, _user , _isEmailVerified} from "../services/auth.service";
 import { hashItem, validateHash } from "../middleware/hash";
 import { generateJwtToken } from "../middleware/auth";
 import SendMail from "../middleware/mailer";
@@ -23,8 +23,9 @@ export async function userRegister(
   next: NextFunction
 ) {
   const { auth, user, payload } = req.body;
+  console.log(req.body, "this is the request body")
 
-  console.log("this is from register");
+  console.log("this is from register that is updated");
 
   if (!auth || !user) next(new CustomError("auth or user data not provided"));
 
@@ -129,6 +130,14 @@ export async function userLogin(
       next(err)
     );
 
+  //   const expiration = 1220
+  //  // HttpContext.Response.Cookies.Append("access_token", tokens.AccessToken, new CookieOptions { HttpOnly = true });
+  //   res.cookie('token', jwt, {
+  //     expires: new Date(Date.now() + expiration), 
+  //     secure: false, // set to true if your using https
+  //     httpOnly: true,
+  //   });
+
     res
       .status(200)
       .send({
@@ -226,4 +235,79 @@ export async function confirmEmail(
    } catch (error) {
        next(error)
    }
+}
+
+
+export async function isEmailVerified(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const uuid = req.params.id;
+
+  if (!uuid) next(new CustomError("User uuid not provided"));
+
+
+  const isUuidValid = await validateUuid(uuid);
+
+  if (!isUuidValid) {
+    next(new CustomError("uuid is not valid"));
+  }
+
+  const data = await _isEmailVerified(uuid, next).catch(
+    (err:any) => {
+      next(err);
+    }
+  );
+
+  if (!data) throw new CustomError("An error occurred");
+
+  if (data) {
+  
+    res
+      .status(200)
+      .send({
+        success: true,
+        message: "request successful",
+        data: data || null,
+      });
+  }
+}
+
+
+
+export async function user(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const uuid = req.params.id;
+
+ 
+
+  const isUuidValid = await validateUuid(uuid);
+
+  if (!isUuidValid) {
+    next(new CustomError("uuid is not valid"));
+  }
+
+  const data = await _user(uuid, next).catch(
+    (err:any) => {
+      next(err);
+    }
+  );
+
+  if (!data) throw new CustomError("An error occured");
+
+  if (data) {
+    
+
+    res
+      .status(200)
+      .send({
+        success: true,
+        message: "Request successful",
+        data: data || null,
+      });
+  }
 }

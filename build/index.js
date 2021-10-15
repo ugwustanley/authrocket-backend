@@ -29,7 +29,7 @@ app.get("*", function (req, res) {
 // });
 app.use(error_1.default);
 var PORT = process.env.PORT || 8080;
-app.listen(PORT, function () {
+app.listen(process.env.PORT || 8080, function () {
     console.log("port running at " + PORT);
     mongo_db_config_1.default();
 });

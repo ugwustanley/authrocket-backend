@@ -51,6 +51,8 @@ var customError_1 = __importDefault(require("./customError"));
  */
 function RequestAuthentication(req, res, next) {
     var token = req.headers.authorization;
+    //console.log(req.cookies.token)
+    //   const token = null;
     var jwtSecret = process.env.JWT_SECRET || "stanlee";
     if (!token)
         return next(new customError_1.default("This request is unauthorized"));

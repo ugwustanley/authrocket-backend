@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._confirmEmail = exports._getUsers = exports._userLogin = exports._userRegister = void 0;
+exports._user = exports._isEmailVerified = exports._confirmEmail = exports._getUsers = exports._userLogin = exports._userRegister = void 0;
 var mongoose_models_1 = require("../models/mongoose.models");
 var customError_1 = __importDefault(require("../middleware/customError"));
 var hash_1 = require("../middleware/hash");
@@ -126,3 +126,37 @@ var _confirmEmail = function (uuid) { return __awaiter(void 0, void 0, void 0, f
     });
 }); };
 exports._confirmEmail = _confirmEmail;
+var _isEmailVerified = function (uuid, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var userData;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, mongoose_models_1.User.findOne({ uuid: uuid })];
+            case 1:
+                userData = _a.sent();
+                if (!userData)
+                    throw new customError_1.default("User does not exist");
+                if (userData) {
+                    return [2 /*return*/, userData.isEmailVerified];
+                }
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports._isEmailVerified = _isEmailVerified;
+var _user = function (uuid, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var userData;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, mongoose_models_1.User.findOne({ uuid: uuid })];
+            case 1:
+                userData = _a.sent();
+                if (!userData)
+                    throw new customError_1.default("user does not exist");
+                if (userData) {
+                    return [2 /*return*/, userData];
+                }
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports._user = _user;

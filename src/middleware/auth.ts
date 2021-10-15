@@ -14,12 +14,14 @@ import CustomError from './customError';
 export default function RequestAuthentication(req: Request, res: Response, next: NextFunction) {
  
           const token = req.headers.authorization;
-
+          //console.log(req.cookies.token)
+        //   const token = null;
+         
           const jwtSecret = process.env.JWT_SECRET || "stanlee";
 
           if (!token) return next(new CustomError("This request is unauthorized"));
 
-          jwt.verify( token , jwtSecret , (err, data) => {
+          jwt.verify( token , jwtSecret , (err:any, data:any) => {
 
                if (err) return next(new CustomError("This request is unauthorized"));
 

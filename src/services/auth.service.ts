@@ -79,3 +79,33 @@ export const _confirmEmail = async (uuid:string) =>{
 
 }
 
+
+export const _isEmailVerified = async (uuid:string, next:NextFunction) =>{
+    
+    const userData = await User.findOne({  uuid:uuid })
+
+    if(!userData) throw new CustomError("User does not exist")
+
+
+
+    if(userData){
+        
+       return userData.isEmailVerified;
+    }
+    
+}
+
+export const _user= async (uuid:string, next:NextFunction) =>{
+    
+    const userData = await User.findOne({  uuid:uuid  })
+
+    if(!userData) throw new CustomError("user does not exist")
+
+
+
+    if(userData){
+        
+        return userData;
+    }
+    
+}
