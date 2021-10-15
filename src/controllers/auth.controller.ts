@@ -65,10 +65,10 @@ export async function userRegister(
             <h2 style="text-align:center;font-size:20px;">Verify your email address</h2>
             <p style="padding-bottom:.1rem;text-align:center">Please confirm that you want to use ${data.email} as your ${data.appName} account email address.</p>
             <p style="text-align:center">Verify this email address by clicking the button below</p>
-            <a style="display:block;margin:auto;text-align:center;margin-top:2rem;margin-bottom:2rem;text-decoration:none;" href="http:localhost:8080/v1/users/confirm/${data.uuid}"><button style="padding:1rem;color:#fff;background:#553d83;display:block;margin:auto;text-align:center;border:none;outline:none;">Confirm Email Address</button></a>
+            <a style="display:block;margin:auto;text-align:center;margin-top:2rem;margin-bottom:2rem;text-decoration:none;" href="https://authrocket.herokuapp.com/v1/users/confirm/${data.uuid}"><button style="padding:1rem;color:#fff;background:#553d83;display:block;margin:auto;text-align:center;border:none;outline:none;">Confirm Email Address</button></a>
 
             <p style="padding:7px;text-align:center;">Or copy and paste the below link to your browser</p>
-            <p style="color:blue;text-align:center">http:localhost:8080/v1/users/confirm/${data.uuid}</p>
+            <p style="color:blue;text-align:center">https://authrocket.herokuapp.com/v1/users/confirm/${data.uuid}</p>
             `;
       SendMail(
         data.email,
