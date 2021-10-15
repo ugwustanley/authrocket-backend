@@ -49,7 +49,7 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 8080
 
-app.listen(PORT , () =>{
+app.listen( process.env.PORT || 8080 , () =>{
     console.log(`port running at ${PORT}`)
     initDB()
 })
