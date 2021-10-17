@@ -5,10 +5,11 @@ import { NextFunction } from 'express';
 
 
 export const _userRegister = async (email:string, password: string, apiKey:string, uuid: string, appName:string,  payload?:any, next?:any ) =>{
+    const  userData = await User.findOne({
+            email
+        })
+    if(userData && userData.apiKey === apiKey ) throw new CustomError("Email address already exists", 400 , null);
 
-    if (await User.findOne({
-        email
-    })) throw new CustomError("Email address already exists", 400 , null);
 
     else  {
     const data = {

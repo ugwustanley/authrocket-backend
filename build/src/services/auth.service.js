@@ -44,14 +44,15 @@ var mongoose_models_1 = require("../models/mongoose.models");
 var customError_1 = __importDefault(require("../middleware/customError"));
 var hash_1 = require("../middleware/hash");
 var _userRegister = function (email, password, apiKey, uuid, appName, payload, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var data, user;
+    var userData, data, user;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, mongoose_models_1.User.findOne({
                     email: email
                 })];
             case 1:
-                if (_a.sent())
+                userData = _a.sent();
+                if (userData && userData.apiKey === apiKey)
                     throw new customError_1.default("Email address already exists", 400, null);
                 else {
                     data = {
