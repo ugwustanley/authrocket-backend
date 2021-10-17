@@ -74,7 +74,8 @@ export async function userRegister(
       SendMail(
         data.email,
         "Confirm Email Addresss",
-        body || "this is to test out our application click https://gmail.com"
+        body || "this is to test out our application click https://gmail.com",
+        next
       );
     } catch (err) {
       next(err);
@@ -117,7 +118,7 @@ export async function userLogin(
     next(new CustomError("api key is not valid"));
   }
 
-  const data = await _userLogin(user.email, user.password, next).catch(
+  const data = await _userLogin(user.email, user.password, auth.apiKey, next).catch(
     (err) => {
       next(err);
     }

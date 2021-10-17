@@ -28,20 +28,25 @@ var mail_transport = nodemailer_1.default.createTransport({
     }
 });
 // #D7F9FF
-function SendMail(to, subject, body) {
+function SendMail(to, subject, body, next) {
     //  console.log(USERNAME, PASSWORD)
-    mail_transport.sendMail({
-        from: "ugwuchiagoziestanley@gmail.com",
-        to: to,
-        subject: subject,
-        //   text: body,
-        html: body
-    }, function (err, info) {
-        if (err) {
-            console.log("Failed to send mail to ", to, err);
-            throw new customError_1.default("An error occurred while sending" + subject + "email");
-        }
-        console.log("Email Notification Sent Successfully");
-    });
+    try {
+        mail_transport.sendMail({
+            from: "ugwuchiagoziestanley@gmail.com",
+            to: to,
+            subject: subject,
+            //   text: body,
+            html: body
+        }, function (err, info) {
+            if (err) {
+                console.log("Failed to send mail to ", to, err);
+                throw new customError_1.default("An error occurred while sending" + subject + "email");
+            }
+            console.log("Email Notification Sent Successfully");
+        });
+    }
+    catch (error) {
+        next(new customError_1.default('an error occurred while trying to send mail'));
+    }
 }
 exports.default = SendMail;

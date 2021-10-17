@@ -88,7 +88,7 @@ function userRegister(req, res, next) {
                     if (data) {
                         try {
                             body = "\n            <img style=\"width:220px;display:block;margin:auto\" src=\"https://i.ibb.co/DkDnnZW/sent-removebg-preview.png\">\n            <h2 style=\"text-align:center;font-size:20px;\">Verify your email address</h2>\n            <p style=\"padding-bottom:.1rem;text-align:center\">Please confirm that you want to use " + data.email + " as your " + data.appName + " account email address.</p>\n            <p style=\"text-align:center\">Verify this email address by clicking the button below</p>\n            <a style=\"display:block;margin:auto;text-align:center;margin-top:2rem;margin-bottom:2rem;text-decoration:none;\" href=\"https://authrocket.herokuapp.com/v1/users/confirm/" + data.uuid + "\"><button style=\"padding:1rem;color:#fff;background:#553d83;display:block;margin:auto;text-align:center;border:none;outline:none;\">Confirm Email Address</button></a>\n\n            <p style=\"padding:7px;text-align:center;\">Or copy and paste the below link to your browser</p>\n            <p style=\"color:blue;text-align:center\">https://authrocket.herokuapp.com/v1/users/confirm/" + data.uuid + "</p>\n            ";
-                            mailer_1.default(data.email, "Confirm Email Addresss", body || "this is to test out our application click https://gmail.com");
+                            mailer_1.default(data.email, "Confirm Email Addresss", body || "this is to test out our application click https://gmail.com", next);
                         }
                         catch (err) {
                             next(err);
@@ -132,7 +132,7 @@ function userLogin(req, res, next) {
                     if (!isApiKeyValid) {
                         next(new customError_1.default("api key is not valid"));
                     }
-                    return [4 /*yield*/, auth_service_1._userLogin(user.email, user.password, next).catch(function (err) {
+                    return [4 /*yield*/, auth_service_1._userLogin(user.email, user.password, auth.apiKey, next).catch(function (err) {
                             next(err);
                         })];
                 case 2:

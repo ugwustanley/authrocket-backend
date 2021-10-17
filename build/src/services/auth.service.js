@@ -47,14 +47,16 @@ var _userRegister = function (email, password, apiKey, uuid, appName, payload, n
     var userData, data, user;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, mongoose_models_1.User.findOne({
+            case 0: return [4 /*yield*/, mongoose_models_1.User.find({
                     email: email
                 })];
             case 1:
                 userData = _a.sent();
-                if (userData && userData.apiKey === apiKey)
-                    throw new customError_1.default("Email address already exists", 400, null);
-                else {
+                if (userData) {
+                    userData.map(function (user) {
+                        if (user.apiKey == apiKey)
+                            throw new customError_1.default("Email address already exists", 400, null);
+                    });
                     data = {
                         email: email,
                         password: password,
@@ -76,26 +78,40 @@ var _userRegister = function (email, password, apiKey, uuid, appName, payload, n
     });
 }); };
 exports._userRegister = _userRegister;
-var _userLogin = function (email, password, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var userData, isPasswordValid;
+var _userLogin = function (email, password, apiKey, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var userData, i, isPasswordValid;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, mongoose_models_1.User.findOne({ email: email })];
+            case 0: return [4 /*yield*/, mongoose_models_1.User.find({ email: email })];
             case 1:
                 userData = _a.sent();
-                if (!userData)
+                console.log(userData, userData.length);
+                if (!userData || userData.length == 0)
                     throw new customError_1.default("Email address does not exist");
-                if (!userData) return [3 /*break*/, 3];
-                return [4 /*yield*/, hash_1.validateHash(password, userData.password).catch(function (err) { return next(err.message); })];
+                if (!userData) return [3 /*break*/, 7];
+                i = 0;
+                _a.label = 2;
             case 2:
+                if (!(i < userData.length)) return [3 /*break*/, 6];
+                if (!(userData[i].apiKey === apiKey)) return [3 /*break*/, 4];
+                console.log('api key mates');
+                return [4 /*yield*/, hash_1.validateHash(password, userData[i].password).catch(function (err) { return next(err.message); })];
+            case 3:
                 isPasswordValid = _a.sent();
                 if (!isPasswordValid) {
                     throw new customError_1.default("User password provided is incorrect");
                 }
                 if (isPasswordValid)
-                    return [2 /*return*/, userData];
-                _a.label = 3;
-            case 3: return [2 /*return*/];
+                    return [2 /*return*/, userData[i]];
+                return [3 /*break*/, 5];
+            case 4:
+                console.log('reached');
+                _a.label = 5;
+            case 5:
+                i++;
+                return [3 /*break*/, 2];
+            case 6: throw new customError_1.default("This account doesn't exist for this application");
+            case 7: return [2 /*return*/];
         }
     });
 }); };

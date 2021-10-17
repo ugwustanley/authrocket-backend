@@ -2,16 +2,22 @@ import { User , IUserSchema} from '../models/mongoose.models'
 import CustomError, { ValidationError} from '../middleware/customError'
 import {validateHash} from '../middleware/hash'
 import { NextFunction } from 'express';
+import { convertCompilerOptionsFromJson } from 'typescript';
 
 
 export const _userRegister = async (email:string, password: string, apiKey:string, uuid: string, appName:string,  payload?:any, next?:any ) =>{
-    const  userData = await User.findOne({
+    const  userData = await User.find({
             email
         })
-    if(userData && userData.apiKey === apiKey ) throw new CustomError("Email address already exists", 400 , null);
+    if(userData ){
+  
+        userData.map(
+            user =>{
+                if(user.apiKey == apiKey ) throw new CustomError("Email address already exists", 400 , null) 
+            }
+        )
+       
 
-
-    else  {
     const data = {
         email,
         password,
@@ -32,28 +38,46 @@ export const _userRegister = async (email:string, password: string, apiKey:strin
 
     }
 
-
 }
 
 
-export const _userLogin = async (email:string, password:string, next:NextFunction) =>{
+export const _userLogin = async (email:string, password:string,apiKey:string, next:NextFunction) =>{
     
-    const userData = await User.findOne({  email:email  })
-
-    if(!userData) throw new CustomError("Email address does not exist")
-
-
-
+    const userData = await User.find({  email:email  })
+    console.log(userData, userData.length)
+    if(!userData || userData.length == 0) throw new CustomError("Email address does not exist")
+    
     if(userData){
+        for(let i = 0; i < userData.length ; i++){
+            if(userData[i].apiKey === apiKey){
+                console.log('api key mates')
+                const isPasswordValid = await validateHash( password , userData[i].password ).catch(err => next(err.message))
         
-        const isPasswordValid = await validateHash( password , userData.password ).catch(err => next(err.message))
+                if(!isPasswordValid){
         
-        if(!isPasswordValid){
-
-            throw new CustomError("User password provided is incorrect")
+                    throw new CustomError("User password provided is incorrect")
+                }
+                if(isPasswordValid)  return userData[i];
+            }
+            else{
+                console.log('reached')
+               // throw new CustomError("This account doesn't exist for this application")
+            }
         }
-        if(isPasswordValid)  return userData;
+        throw new CustomError("This account doesn't exist for this application")
     }
+
+
+    // if(userData){
+        
+    //     const isPasswordValid = await validateHash( password , userData.password ).catch(err => next(err.message))
+        
+    //     if(!isPasswordValid){
+
+    //         throw new CustomError("User password provided is incorrect")
+    //     }
+    //     if(isPasswordValid)  return userData;
+    // }
     
 }
 
