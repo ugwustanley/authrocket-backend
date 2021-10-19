@@ -74,7 +74,7 @@ export async function userRegister(
       SendMail(
         data.email,
         "Confirm Email Addresss",
-        body || "this is to test out our application click https://gmail.com",
+        body,
         next
       );
     } catch (err) {
@@ -131,13 +131,7 @@ export async function userLogin(
       next(err)
     );
 
-  //   const expiration = 1220
-  //  // HttpContext.Response.Cookies.Append("access_token", tokens.AccessToken, new CookieOptions { HttpOnly = true });
-  //   res.cookie('token', jwt, {
-  //     expires: new Date(Date.now() + expiration), 
-  //     secure: false, // set to true if your using https
-  //     httpOnly: true,
-  //   });
+
 
     res
       .status(200)
@@ -222,14 +216,7 @@ export async function confirmEmail(
 
        const user = await _confirmEmail(uuid)
 
-      // res.redirect('/v1/users/login');
-      //window.location.href = "/v1/users/login"
-
-    //    res.status(200).send({
-    //     success: true,
-    //     message: "User email address confirmed",
-    //     data: user || null,
-    //   });
+  
      res.send("Email address  confirmed. revisit our site to log into your account")
      
 

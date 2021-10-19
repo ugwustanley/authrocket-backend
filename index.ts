@@ -13,6 +13,10 @@ import CustomError from './src/middleware/customError'
 import initDB from './src/config/mongo-db.config'
 
 const bodyParser = require('body-parser')
+
+import dotenv from 'dotenv'
+dotenv.config()
+
 require("dotenv").config()
 
 const app = express();

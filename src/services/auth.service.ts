@@ -67,17 +67,6 @@ export const _userLogin = async (email:string, password:string,apiKey:string, ne
         throw new CustomError("This account doesn't exist for this application")
     }
 
-
-    // if(userData){
-        
-    //     const isPasswordValid = await validateHash( password , userData.password ).catch(err => next(err.message))
-        
-    //     if(!isPasswordValid){
-
-    //         throw new CustomError("User password provided is incorrect")
-    //     }
-    //     if(isPasswordValid)  return userData;
-    // }
     
 }
 

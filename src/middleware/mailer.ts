@@ -6,35 +6,24 @@ import CustomError from "./customError"
 dotenv.config();
 
 
+
 const mail_transport = nodemailer.createTransport({
-    //  service: "mail.privateemail.com",
-    //  port: 465,
-    //  secure: true, 
-    //  host: 'smtp.gmail.com',
-    //  port: 587,
-    //  secure: true,
+ 
     //  requireTLS: true,
      service: 'gmail',
      auth: {
-        //   type: "OAuth2",
-        //   user: "ugwuchiagoziestanley@gmail.com",
-        //   pass: "08030535733",
-        user:"authrocket2@gmail.com",
-        pass:"unn247790"
-        //   clientId: process.env.CLIENT_ID,
-        //   clientSecret: process.env.CLIENT_SECRET,
-        //   refreshToken: process.env.REFRESH_TOKEN
+        user : process.env.USER,
+        pass : process.env.PASSWORD
      }
 })
 // #D7F9FF
 
 export default function SendMail(to: string, subject: string, body: string, next:NextFunction) {
-
-   //  console.log(USERNAME, PASSWORD)
+ 
      try {
           mail_transport.sendMail({
 
-               from: "ugwuchiagoziestanley@gmail.com",
+               from: process.env.USER || '',
                to: to ,
                subject: subject,
              //   text: body,
